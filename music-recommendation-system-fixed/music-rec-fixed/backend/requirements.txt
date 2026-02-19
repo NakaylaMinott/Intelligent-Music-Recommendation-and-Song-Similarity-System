@@ -1,0 +1,16 @@
+# FastAPI and related
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+pydantic==2.10.0
+pydantic-settings==2.7.0
+python-multipart==0.0.12
+
+# Database - SQLite is built-in to Python, no extra driver needed
+sqlalchemy==2.0.36
+
+# Data processing
+numpy==1.26.4
+
+# Utilities
+python-dotenv==1.0.1
+email-validator==2.2.0

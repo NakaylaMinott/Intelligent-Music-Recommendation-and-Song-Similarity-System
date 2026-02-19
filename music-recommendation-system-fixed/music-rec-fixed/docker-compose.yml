@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: music-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: music_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - music-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: music-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_USER=app_user
+      - DB_PASSWORD=app_password
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=music_db
+      - APP_ENV=development
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - music-network
+    volumes:
+      - ./backend:/app
+    command: >
+      sh -c "
+        echo 'Waiting for database...' &&
+        sleep 10 &&
+        echo 'Seeding database...' &&
+        python seed_data.py &&
+        echo 'Starting API server...' &&
+        uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+      "
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  music-network:
+    driver: bridge
