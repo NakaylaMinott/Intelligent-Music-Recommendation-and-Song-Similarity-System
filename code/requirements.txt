@@ -1,0 +1,33 @@
+# FastAPI + server
+fastapi>=0.100.0
+uvicorn[standard]>=0.22.0
+
+# Database
+sqlalchemy>=2.0.0
+alembic>=1.11.0
+pymysql>=1.1.0
+
+# Auth (Phase 7)
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+bcrypt==4.0.1
+
+# Pydantic
+pydantic[email]>=2.0.0
+email-validator>=2.0.0
+
+# ML / Similarity
+numpy>=1.24.0
+faiss-cpu>=1.7.4       # swap to faiss-gpu if CUDA available
+pandas>=2.0.0
+
+# Audio features
+librosa>=0.10.0
+
+# CLAP embeddings (only needed for pipeline, not runtime)
+# transformers>=4.30.0
+# torch>=2.0.0
+
+# Misc
+python-multipart>=0.0.6
+python-dotenv>=1.0.0

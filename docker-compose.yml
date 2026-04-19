@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: project-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: project_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ./backend/code
+    container_name: project-api
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - D:/music_data:/music_data
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: app_user
+      DB_PASSWORD: app_password
+      DB_NAME: project_db
+      JWT_SECRET: your-secret-key-change-this
+      FMA_AUDIO_DIR: /music_data/raw/fma_large
+      FAISS_INDEX_PATH: /music_data/index/faiss_ivfpqV3.index
+      FAISS_ID_MAP_PATH: /music_data/index/track_id_map_V3.json
+      FMA_METADATA_DIR: /music_data/raw/fma_metadata
+      EMBED_DIR: /music_data/embeddings
+      SEED_MAX_TRACKS: 110000
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
