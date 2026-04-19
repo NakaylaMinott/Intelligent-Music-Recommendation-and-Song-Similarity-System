@@ -30,8 +30,6 @@ This directory is a **flat Python backend** (FastAPI + SQLAlchemy) plus a **sing
 | File | What it contains |
 |------|------------------|
 | **`frontend/index.html`** | Main **Wavelength UI**: auth screen, discovery/for-you/trending/library/**playlists**/account tabs, mini player, playlist modal, toasts. Inline CSS and a large inline `<script>` that calls the FastAPI backend (same origin or `localhost:8000` in dev). This is the file to edit for UI behavior. |
-| **`frontend/index - Copy.html`** | Copy/backup of the HTML (same idea as `index.html`; not used by the server unless you point to it explicitly). |
-| **`frontend/dup.html`** | Alternate or experimental layout with extra playlist UI patterns; useful as reference, not the primary app entry. |
 
 ---
 
